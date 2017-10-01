@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,21 +13,47 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-Route::post('register', 'ApiAuth\ApiAuthController@register');
 Route::post('login', 'ApiAuth\ApiAuthController@login');
 
-Route::middleware(['jwt.auth'])->group(function () {
+Route::middleware(['jwt.auth.ext'])->group(function () {
 
+    Route::get('me', 'ApiAuth\ApiAuthController@me');
     Route::get('logout', 'ApiAuth\ApiAuthController@logout');
-
-    Route::middleware(['check.role:user'])->group(function () {
-        Route::get('testSecurity', function () {
-            return response()->json(\Illuminate\Support\Facades\Auth::user());
-        });
+    Route::get('testSecurity', function () {
+        return response()->json(Auth::user()->role);
     });
+
+    Route::group([
+        'namespace' => 'User',
+        'middleware' => 'check.role:user',
+        'prefix' => 'user'
+    ], function () {
+        //User Routes Here
+    });
+
+    Route::group([
+        'namespace' => 'Admin',
+        'middleware' => 'check.role:admin',
+        'prefix' => 'admin'
+    ], function () {
+        //Admin Routes Here
+    });
+
+    Route::group([
+        'namespace' => 'SuperAdmin',
+        'middleware' => 'check.role:superadmin',
+        'prefix' => 'superadmin'
+    ], function () {
+        //Admin Routes Here
+
+        //TODO convert to RESOURCE route (somehow?)
+        Route::get('get-user-list', "UserController@getUserList");
+        Route::get('get-role-list', "UserController@getRoleList");
+        Route::post('set-user-role', "UserController@setUserRole");
+        Route::post('create-user', 'UserController@createUser');
+        Route::post('set-user-ban', 'UserController@setUserBan');
+    });
+
+
 
 });

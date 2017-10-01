@@ -12,5 +12,6 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return \App\JsonReturn::error("This is a land of API consumers, browsers aren't welcome here"
+        . "                                                                                           We will build a wall & make the browsers pay for it.");
 });

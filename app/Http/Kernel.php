@@ -60,6 +60,7 @@ class Kernel extends HttpKernel
         //JWT
         'jwt.auth' => 'Tymon\JWTAuth\Middleware\GetUserFromToken',
         'jwt.refresh' => 'Tymon\JWTAuth\Middleware\RefreshToken',
+        'jwt.auth.ext' => \App\Http\Middleware\JwtAuthExtended::class,
         'check.role' => \App\Http\Middleware\CheckRole::class,
     ];
 }
