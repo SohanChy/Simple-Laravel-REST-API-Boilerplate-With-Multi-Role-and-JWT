@@ -21,7 +21,8 @@ The technologies used are [Laravel(5.4)](https://laravel.com/docs/5.4/) and [JWT
 2. `composer install`
 3.  create a .env file with database info
 4. `php artisan migrate`
-4.  You are done, now check the `routes/api.php` to see whats available :)
+5. `php artisan jwt:generate`
+6.  You are done, now check the `routes/api.php` to see whats available :)
 
 ## Tutorial / Usage
 

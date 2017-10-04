@@ -38,8 +38,7 @@ class JsonReturn
      */
     public static function success($thing = [])
     {
-
-        self::arrayFication($thing);
+        $thing = self::arrayFication($thing);
 
         $thing['success'] = true;
         return response()->json($thing);
@@ -47,7 +46,6 @@ class JsonReturn
 
     private static function arrayFication($data)
     {
-
         if (is_callable([$data, 'toArray'])) {
             $data = $data->toArray();
         } else {
@@ -59,8 +57,7 @@ class JsonReturn
 
     public static function successData($data = [])
     {
-
-        self::arrayFication($data);
+        $data = self::arrayFication($data);
 
         $thing['success'] = true;
         $thing['data'] = $data;
