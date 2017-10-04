@@ -5,7 +5,6 @@ namespace App;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Response;
 
 class User extends Authenticatable
 {
@@ -26,7 +25,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'updated_at', 'deleted_at', 'created_at'
+        'password', 'remember_token', 'updated_at', 'created_at'
     ];
 
     public static function roles()
@@ -39,7 +38,9 @@ class User extends Authenticatable
 
         if($this->role == "superadmin"){
             return true;
-        } else if ($role == $this->role) {
+        } else if($this->role == "admin" && $role != "superadmin"){
+            return true;
+        } else if ($this->role == $role) {
             return true;
         }
 
@@ -49,7 +50,7 @@ class User extends Authenticatable
     public static function roleErrorResponse(){
 
         $error["error"] = "You do not have permission to access this";
-        return Response::json($error, 200);
+        return JsonReturn::error($error, 401);
 
     }
 

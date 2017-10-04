@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('login', 'ApiAuth\ApiAuthController@login');
+Route::post('register', 'NewUserController@createUser');
 
 Route::middleware(['jwt.auth.ext'])->group(function () {
 
@@ -44,13 +45,10 @@ Route::middleware(['jwt.auth.ext'])->group(function () {
         'middleware' => 'check.role:superadmin',
         'prefix' => 'superadmin'
     ], function () {
-        //Admin Routes Here
-
-        //TODO convert to RESOURCE route (somehow?)
+        //Super Admin Routes Here
         Route::get('get-user-list', "UserController@getUserList");
         Route::get('get-role-list', "UserController@getRoleList");
         Route::post('set-user-role', "UserController@setUserRole");
-        Route::post('create-user', 'UserController@createUser');
         Route::post('set-user-ban', 'UserController@setUserBan');
     });
 

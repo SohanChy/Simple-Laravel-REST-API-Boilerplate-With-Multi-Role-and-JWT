@@ -27,6 +27,9 @@ class UserController extends Controller
             return JsonReturn::error($validator->errors());
         } else {
             $user = User::find($request->user_id);
+            if(! $user){
+                return JsonReturn::error("User not found");
+            }
 
             if (in_array($request->new_role, User::roles())) {
                 $user->role = $request->new_role;
@@ -43,57 +46,6 @@ class UserController extends Controller
         return JsonReturn::successData(User::roles());
     }
 
-    /**
-     * API Register
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function createUser(Request $request)
-    {
-        $rules = [
-            'name' => 'required|max:255',
-            'username' => 'required|max:255|unique:users',
-            'phone' => 'required|max:255',
-            'password' => 'required|min:6',
-            'bio' => 'required',
-            'role' => 'required',
-            'balance' => 'required|min:0'
-        ];
-
-        $input = $request->only(
-            'name',
-            'username',
-            "phone",
-            'password',
-            'bio',
-            'role',
-            'balance'
-        );
-
-        $validator = Validator::make($input, $rules);
-        if ($validator->fails()) {
-            return JsonReturn::error($validator->messages());
-        }
-
-        /** @noinspection PhpDynamicAsStaticMethodCallInspection */
-        $user = User::create([
-                'name' => $request->name,
-                'username' => $request->username,
-                'phone' => $request->phone,
-                'bio' => $request->bio,
-                'balance' => $request->balance,
-                'password' => bcrypt($request->password)]
-        );
-
-        if (in_array($request->role, User::roles())) {
-            $user->role = $request->role;
-            $user->save();
-        }
-
-        return JsonReturn::success($user);
-    }
-
     public function setUserBan(Request $request)
     {
 
@@ -106,6 +58,9 @@ class UserController extends Controller
             return JsonReturn::error($validator->errors());
         } else {
             $user = User::find($request->user_id);
+            if(! $user){
+                return JsonReturn::error("User not found");
+            }
 
             $user->banned = filter_var($request->banned, FILTER_VALIDATE_BOOLEAN);
             $user->save();
