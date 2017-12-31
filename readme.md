@@ -24,9 +24,42 @@ The technologies used are [Laravel(5.4)](https://laravel.com/docs/5.4/) and [JWT
 5. `php artisan jwt:generate`
 6.  You are done, now check the `routes/api.php` to see whats available :)
 
+#### **If** you face an issue with: 
+```
+{
+    "success": false,
+    "error": "token_invalid"
+}
+```
+#### You can solve it by doing these:
+> Run: `php artisan jwt:generate`
+> Copy the secret `[abcd123]` part,
+> Open .env file and add to end:
+> `JWT_SECRET=abcd123`
+
+It's an issue with recent versions of JWT AUTH itself.
+You can find the issue  [here](https://github.com/tymondesigns/jwt-auth/issues/1425).
+
+
 ## Tutorial / Usage
 
-This project is so simple that just taking a look at the `routes/api.php` file should be enough.
+This project is so simple that just taking a look at the `routes/api.php` file should be enough. Some hints are added below:
+
+#### The auth token is placed in the `HEADER`:
+```
+key: Authorization 
+value: Bearer token123
+```
+Sample screenshot from Postman
+![image](https://user-images.githubusercontent.com/12531780/34462706-fa91bb76-ee73-11e7-880d-dc9320c3eb14.png)
+
+#### All responses contain a `success: bool`
+This can be done by returning using the JsonReturn` class.
+For Example 
+
+`return JsonReturn::success($data);`
+
+Check that class out for helper functions.
 
 ## Feedback
 
