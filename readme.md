@@ -1,4 +1,5 @@
 # This is severely outdated, use at own risk.
+### If you are interested in upgrading this to latest Laravel/Lumen, please get in touch.
 
 ## Simple Laravel REST API Boilerplate With Multi Role and JWT
 
